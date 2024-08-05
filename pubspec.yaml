@@ -55,6 +55,7 @@ dependencies:
   path_provider: ^2.0.5
   path: ^1.8.0
   image_gallery_saver: ^2.0.3
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -106,6 +107,8 @@ flutter:
    - assets/coloring_m.png
    - assets/drawing_m.png
    - assets/background.png
+   - assets/gtv5.jpg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

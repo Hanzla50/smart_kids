@@ -9,6 +9,7 @@ import 'package:smart_kids_v1/pages/Homepage/Quiz.dart';
 import 'package:smart_kids_v1/pages/Homepage/Subjects.dart';
 import 'package:smart_kids_v1/pages/dictionary/dictionary_menu.dart';
 import 'package:smart_kids_v1/pages/literacy/early_literacy_menu.dart';
+import 'package:smart_kids_v1/pages/quiz/quiz.dart';
 import 'Daily_Schedule.dart';
 import 'package:smart_kids_v1/widgets/drawer.dart';
 import 'notification_page.dart';
@@ -214,7 +215,7 @@ class _HomepageState extends State<Homepage> {
                     children: [
                       _buildImageWithText("assets/images/game.png", "Games", Gamespage()),
                       SizedBox(height: 20),
-                      _buildImageWithText("assets/images/quiz.png", "Quizzes", Quizpage()),
+                      _buildImageWithText("assets/images/quiz.png", "Quizzes", Quiz()),
                     ],
                   ),
                   SizedBox(height: 30),
