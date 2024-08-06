@@ -5,9 +5,7 @@ import '../Start/profile_info.dart';
 import 'Letters_EL.dart';
 import 'Numbers_EL.dart';
 import 'Phonics_EL.dart';
-//import 'LetterMatching.dart';
 import 'LetterMatching.dart';
-// import '../DICTIONARY_GLOSSARY/dictionary_menu.dart';
 
 class Literacy_Menu extends StatelessWidget {
   @override
