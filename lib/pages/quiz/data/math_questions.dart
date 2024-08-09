@@ -2,7 +2,7 @@ import 'package:smart_kids_v1/pages/quiz/models/quiz_questions.dart';
 
 
 const math_questions = [
-  QuizQuestions(
+  MathQuestions(
     'First letter in math is?',
     [
       '0',
@@ -11,7 +11,7 @@ const math_questions = [
       '1',
     ],
   ),
-  QuizQuestions(
+   MathQuestions(
     '1, _, 3, 4?',
     [
       '2',
@@ -20,7 +20,7 @@ const math_questions = [
       '0',
     ],
   ),
-  QuizQuestions(
+   MathQuestions(
     '1, 2, _, 4?',
     [
       '3',
@@ -29,7 +29,7 @@ const math_questions = [
       '5',
     ],
   ),
-  QuizQuestions(
+  MathQuestions(
     '1 + 1?',
     [
       '2',

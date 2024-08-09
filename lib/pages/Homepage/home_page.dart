@@ -215,7 +215,7 @@ class _HomepageState extends State<Homepage> {
                     children: [
                       _buildImageWithText("assets/images/game.png", "Games", Gamespage()),
                       SizedBox(height: 20),
-                      _buildImageWithText("assets/images/quiz.png", "Quizzes", Quiz_menu()),
+                      _buildImageWithText("assets/images/quiz.png", "Quizzes", HomeTask()),
                     ],
                   ),
                   SizedBox(height: 30),
