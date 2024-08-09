@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_kids_v1/controllers/currentUserController.dart';
 import 'package:smart_kids_v1/model/customUser.dart';
-import 'package:smart_kids_v1/pages/Start/profile_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_kids_v1/pages/Homepage/ParentalControl/timeLimit.dart';
 
@@ -110,7 +109,7 @@ class ReportScreen extends StatelessWidget {
                   height: 250,
                   width: 400,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 196, 196, 197),
+                    color:const Color.fromARGB(255, 196, 196, 197),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Column(
@@ -160,7 +159,7 @@ class ReportScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text("     Activity Done:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("     Activity Done: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       Text("     Total Score:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       Text("     Total Percentage:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       Text("     Right:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),

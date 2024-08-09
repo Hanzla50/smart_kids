@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+
 import 'package:smart_kids_v1/pages/Homepage/home_page.dart';
 import 'package:smart_kids_v1/pages/quiz/math_quiz/math_quiz.dart';
-import 'package:smart_kids_v1/pages/quiz/math_quiz/quiz.dart';
 import 'package:smart_kids_v1/pages/quiz/quiz.dart';
-import '../Start/profile_info.dart';
-import 'package:smart_kids_v1/pages/quiz/math_quiz/math_quiz.dart';
-
-
-
-import 'package:flutter/material.dart';
 
 class HomeTask extends StatelessWidget {
   const HomeTask({super.key});
@@ -25,102 +18,86 @@ class HomeTask extends StatelessWidget {
         children: [
           // Background Image
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/Dictionary_Glossary/background.png'), // Your background image path
+                image: AssetImage('assets/Dictionary_Glossary/background.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
           // Content
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // First Container
-                GestureDetector(
-                  onTap: () {
-                    Quiz_menu();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Image.asset(
-                            "assets/images/quiz.png", // Your first image path
-                            height: 80,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            'Quiz',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+          Column(
+            children: [
+              // Add space between AppBar and content
+              SizedBox(height: 30),
+              // Main Row Content
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildImageWithText(
+                    context,
+                    "assets/images/quiz.png",
+                    "Quiz",
+                    Quiz_menu(),
                   ),
-                ),
-                // Second Container
-                GestureDetector(
-                  onTap: () {
-                    // Action when second container is pressed
-                    print('Second container pressed');
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    width: 150,
-                    height: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Image.asset(
-                            "assets/images/quiz.png", // Your second image path
-                            height: 80,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                            'Assesments',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  _buildImageWithText(
+                    context,
+                    "assets/images/quiz.png",
+                    "Assessments",
+                    Assesments(),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
     );
   }
-}
 
+  Widget _buildImageWithText(
+    BuildContext context,
+    String imagePath,
+    String labelText,
+    Widget nextPage,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => nextPage),
+        );
+      },
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Image.asset(imagePath, width: 120),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    color: Colors.black54,
+                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                    child: Text(
+                      labelText,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10), // Space between image and text (optional)
+        ],
+      ),
+    );
+  }
+}
 
 
 class Quiz_menu extends StatelessWidget {
@@ -163,51 +140,55 @@ class Quiz_menu extends StatelessWidget {
                     ),
                     Expanded(
                       child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // First row with two images and text
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildImageWithText("assets/images/Early.png", "English", Quiz()),
-                      SizedBox(height: 20),
-                      _buildImageWithText("assets/images/Dictionary.png", "Dictionary", MathQuiz()),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  // Second row with two images and text
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     _buildImageWithText("assets/images/subject.png", "Subjects", Subjectspage()),
-                  //     SizedBox(height: 20),
-                  //     _buildImageWithText("assets/images/art.png", "Art", ArtMenu()),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 30),
-                  // // Third row with two images and text
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     _buildImageWithText("assets/images/game.png", "Games", Gamespage()),
-                  //     SizedBox(height: 20),
-                  //     _buildImageWithText("assets/images/quiz.png", "Quizzes", Quiz_menu()),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 30),
-                  // Row(
-                    
-                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //   children: [
-                  //     _buildImageWithText("assets/images/to_do_list_logo.png", "Daily_Schedule", Daily_Schedule()),
-                  //     SizedBox(height: 20),
-                  //     _buildImageWithText("assets/images/white.png", "", Daily_Schedule()),
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // First row with two images and text
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildImageWithText(context,
+                                  "assets/images/Early.png", "English", Quiz()),
+                              SizedBox(height: 20),
+                              _buildImageWithText(
+                                  context,
+                                  "assets/images/Dictionary.png",
+                                  "Math",
+                                  MathQuiz()),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          // Second row with two images and text
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: [
+                          //     _buildImageWithText("assets/images/subject.png", "Subjects", Subjectspage()),
+                          //     SizedBox(height: 20),
+                          //     _buildImageWithText("assets/images/art.png", "Art", ArtMenu()),
+                          //   ],
+                          // ),
+                          // SizedBox(height: 30),
+                          // // Third row with two images and text
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: [
+                          //     _buildImageWithText("assets/images/game.png", "Games", Gamespage()),
+                          //     SizedBox(height: 20),
+                          //     _buildImageWithText("assets/images/quiz.png", "Quizzes", Quiz_menu()),
+                          //   ],
+                          // ),
+                          // SizedBox(height: 30),
+                          // Row(
 
-                      
-                  //   ],
-                  // ),
-                ],
-              ),
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: [
+                          //     _buildImageWithText("assets/images/to_do_list_logo.png", "Daily_Schedule", Daily_Schedule()),
+                          //     SizedBox(height: 20),
+                          //     _buildImageWithText("assets/images/white.png", "", Daily_Schedule()),
+
+                          //   ],
+                          // ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -215,10 +196,9 @@ class Quiz_menu extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) => const Homepage(
-                                      studentName: '')));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) =>
+                                    const Homepage(studentName: '')));
                           },
                           child: Container(
                             width: 50.0,
@@ -249,12 +229,13 @@ class Quiz_menu extends StatelessWidget {
     );
   }
 
-  Widget _buildImageWithText(String imagePath, String labelText, Widget nextPage) {
+  Widget _buildImageWithText(BuildContext context, String imagePath,
+      String labelText, Widget nextPage) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-          context as BuildContext,
-          MaterialPageRoute(builder: (ctx) => nextPage),
+          context,
+          MaterialPageRoute(builder: (context) => nextPage),
         );
       },
       child: Column(
@@ -282,6 +263,19 @@ class Quiz_menu extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class Assesments extends StatelessWidget {
+  const Assesments({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Assesments'),
       ),
     );
   }
