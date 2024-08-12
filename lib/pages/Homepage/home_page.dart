@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_kids_v1/controllers/currentUserController.dart';
 import 'package:smart_kids_v1/pages/Art/Art%20Menu.dart';
+import 'package:smart_kids_v1/pages/Daily_Schedule/widgets/tasks.dart';
 import 'package:smart_kids_v1/pages/Homepage/Art.dart';
 import 'package:smart_kids_v1/pages/Homepage/Dictionary.dart';
 import 'package:smart_kids_v1/pages/Homepage/Games.dart';
@@ -223,7 +224,7 @@ class _HomepageState extends State<Homepage> {
                     
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildImageWithText("assets/images/to_do_list_logo.png", "Daily_Schedule", Daily_Schedule()),
+                      _buildImageWithText("assets/images/to_do_list_logo.png", "Daily_Schedule", Expenses()),
                       SizedBox(height: 20),
                       _buildImageWithText("assets/images/white.png", "", Daily_Schedule()),
 
