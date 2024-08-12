@@ -24,3 +24,21 @@ class MathQuestions{
     return shuffledList; 
   }
 }
+
+class GeneralKnowledgeQuestions {
+  const GeneralKnowledgeQuestions(
+    this.text,
+    this.image,
+    this.answers,
+  );
+
+  final String text;
+  final String image;
+  final List<String> answers;
+
+  List<String> getShuffledAnswers() {
+    final shuffledList = List.of(answers);
+    shuffledList.shuffle();
+    return shuffledList;
+  }
+}

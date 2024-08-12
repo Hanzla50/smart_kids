@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_kids_v1/pages/quiz/data/math_questions.dart';
-import 'package:smart_kids_v1/pages/quiz/math_quiz/math_question_summary.dart';
+import 'package:smart_kids_v1/pages/quiz/data/general_knowledge_questions.dart';
+import 'package:smart_kids_v1/pages/quiz/general_knowledge_quiz/general_question_summary.dart';
 
-class MathResultScreen extends StatelessWidget {
-  const MathResultScreen({
+class GeneralResultScreen extends StatelessWidget {
+  const GeneralResultScreen({
     super.key,
     required this.chosenAnswer,
     required this.onRestart,
@@ -16,15 +16,15 @@ class MathResultScreen extends StatelessWidget {
 
   Future<void> updateQuizReport(int correctAnswers, int totalQuestions) async {
     final prefs = await SharedPreferences.getInstance();
-    int quizzesDone = prefs.getInt('math_quizzes_done') ?? 0;
-    int totalScore = prefs.getInt('math_total_score') ?? 0;
+    int quizzesDone = prefs.getInt('general_knowledge_quizzes_done') ?? 0;
+    int totalScore = prefs.getInt('general_knowledge_total_score') ?? 0;
 
     quizzesDone += 1;
     totalScore += correctAnswers;
 
-    await prefs.setInt('math_quizzes_done', quizzesDone);
-    await prefs.setInt('math_total_score', totalScore);
-    await prefs.setDouble('math_total_percentage', (totalScore / (quizzesDone * totalQuestions)) * 100);
+    await prefs.setInt('general_knowledge_quizzes_done', quizzesDone);
+    await prefs.setInt('general_knowledge_total_score', totalScore);
+    await prefs.setDouble('general_knowledge_total_percentage', (totalScore / (quizzesDone * totalQuestions)) * 100);
   }
 
   List<Map<String, Object>> getSummaryData() {
@@ -33,9 +33,9 @@ class MathResultScreen extends StatelessWidget {
     for (var i = 0; i < chosenAnswer.length; i++) {
       summary.add(
         {
-          'math_question_index': i,
-          'math_question': math_questions[i].text,
-          'correct_answer': math_questions[i].answers[0],
+          'general_knowledge_question_index': i,
+          'general_knowledge_question': generalKnowledgeQuestions[i].text,
+          'correct_answer': generalKnowledgeQuestions[i].answers[0],
           'user_answer': chosenAnswer[i],
         },
       );
@@ -46,7 +46,7 @@ class MathResultScreen extends StatelessWidget {
   @override
   Widget build(context) {
     final summaryData = getSummaryData();
-    final numTotalQuestions = math_questions.length;
+    final numTotalQuestions = generalKnowledgeQuestions.length;
     final numCorrectQuestions = summaryData.where((data) {
       return data['user_answer'] == data['correct_answer'];
     }).length;
@@ -64,21 +64,20 @@ class MathResultScreen extends StatelessWidget {
             Text(
               'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!',
               style: GoogleFonts.lato(
-                color: Color.fromARGB(255, 230, 200, 253),
+                color: const Color.fromARGB(255, 230, 200, 253),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
-            MathQuestionSummary(summaryData),
+            GeneralQuestionSummary(summaryData),
             const SizedBox(height: 30),
             TextButton.icon(
-              onPressed: onRestart,
-              style: TextButton.styleFrom(foregroundColor: Colors.white),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Restart Quiz!'),
-            ),
+                onPressed: onRestart,
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
+                icon: const Icon(Icons.refresh),
+                label: const Text('Restart Quiz!')),
           ],
         ),
       ),

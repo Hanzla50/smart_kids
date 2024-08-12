@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_kids_v1/controllers/currentUserController.dart';
 import 'package:smart_kids_v1/model/customUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_kids_v1/pages/Homepage/ParentalControl/timeLimit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 class ParentControlpage extends StatefulWidget {
@@ -91,12 +91,58 @@ class _ParentControlpageState extends State<ParentControlpage> {
   }
 }
 
-class ReportScreen extends StatelessWidget {
+
+class ReportScreen extends StatefulWidget {
+  @override
+  _ReportScreenState createState() => _ReportScreenState();
+}
+
+class _ReportScreenState extends State<ReportScreen> {
+  int quizzesDone = 0;
+  int totalScore = 0;
+  double totalPercentage = 0.0;
+  int generalKnowledgeQuizzesDone = 0;
+  int mathQuizzesDone = 0;
+  int englishQuizzesDone = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    loadQuizReport();
+  }
+
+  Future<void> loadQuizReport() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Fetch results for each quiz
+    setState(() {
+      generalKnowledgeQuizzesDone = prefs.getInt('general_knowledge_quizzes_done') ?? 0;
+      mathQuizzesDone = prefs.getInt('math_quizzes_done') ?? 0;
+      englishQuizzesDone = prefs.getInt('english_quizzes_done') ?? 0;
+
+      final int generalKnowledgeTotalScore = prefs.getInt('general_knowledge_total_score') ?? 0;
+      final int mathTotalScore = prefs.getInt('math_total_score') ?? 0;
+      final int englishTotalScore = prefs.getInt('english_total_score') ?? 0;
+
+      final int totalQuizzesDone = generalKnowledgeQuizzesDone + mathQuizzesDone + englishQuizzesDone;
+      final int totalScoreAccumulated = generalKnowledgeTotalScore + mathTotalScore + englishTotalScore;
+
+      quizzesDone = totalQuizzesDone;
+      totalScore = totalScoreAccumulated;
+
+      final totalQuestions = (generalKnowledgeQuizzesDone + mathQuizzesDone + englishQuizzesDone) == 0
+          ? 1  // To prevent division by zero
+          : (generalKnowledgeQuizzesDone + mathQuizzesDone + englishQuizzesDone);
+
+      totalPercentage = (totalScoreAccumulated / totalQuestions) * 100;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Report'),
+        title: const Text('Report'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -107,34 +153,33 @@ class ReportScreen extends StatelessWidget {
               children: [
                 Container(
                   height: 250,
-                  width: 400,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color:const Color.fromARGB(255, 196, 196, 197),
+                    color: const Color.fromARGB(255, 196, 196, 197),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '                Activity Report',
+                      const Text(
+                        'Activity Report',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 251, 251, 251),
-                          
-
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text("      Activity Done:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("      Total Score:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("      Total Percentage:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("      Right:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("      Wrong:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 20),
-                      Text(
-                        "  Skills:",
-                        style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 89, 89, 89)),
+                      const SizedBox(height: 10),
+                      Text("Quizzes Done: $quizzesDone", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("Total Score: $totalScore", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("Total Percentage: ${totalPercentage.toStringAsFixed(2)}%", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "Skills:",
+                        style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 89, 89, 89)),
                       ),
                     ],
                   ),
@@ -142,39 +187,40 @@ class ReportScreen extends StatelessWidget {
                 SizedBox(height: 4),
                 Container(
                   height: 250,
-                  width: 400,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 174, 192, 224),
+                    color: const Color.fromARGB(255, 174, 192, 224),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '               Quizzes Report',
+                      const Text(
+                        'Quizzes Report',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 251, 251, 251),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text("     Activity Done: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("     Total Score:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("     Total Percentage:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("     Right:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("     Wrong:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 5),
-                      Text(
-                        "  Skills:",
-                        style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 47, 21, 93)),
+                      const SizedBox(height: 10),
+                      Text("General Knowledge Quizzes Done: $generalKnowledgeQuizzesDone", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("Math Quizzes Done: $mathQuizzesDone", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Text("English Quizzes Done: $englishQuizzesDone", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 5),
+                      const Text(
+                        "Skills:",
+                        style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 47, 21, 93)),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 30), // Add spacing between the row and additional texts
+            SizedBox(height: 30),
             const Text(
               'Overall Performance',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -192,6 +238,7 @@ class ReportScreen extends StatelessWidget {
     );
   }
 }
+
 
 
 class RecordScreen extends StatelessWidget {

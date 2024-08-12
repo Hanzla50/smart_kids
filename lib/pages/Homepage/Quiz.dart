@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:smart_kids_v1/pages/Homepage/home_page.dart';
+import 'package:smart_kids_v1/pages/quiz/general_knowledge_quiz/general_quiz.dart';
 import 'package:smart_kids_v1/pages/quiz/math_quiz/math_quiz.dart';
 import 'package:smart_kids_v1/pages/quiz/quiz.dart';
 
@@ -157,15 +158,15 @@ class Quiz_menu extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 30),
-                          // Second row with two images and text
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //   children: [
-                          //     _buildImageWithText("assets/images/subject.png", "Subjects", Subjectspage()),
-                          //     SizedBox(height: 20),
-                          //     _buildImageWithText("assets/images/art.png", "Art", ArtMenu()),
-                          //   ],
-                          // ),
+                          //Second row with two images and text
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildImageWithText(context,"assets/images/subject.png", "General Knowledge", GeneralQuiz()),
+                              SizedBox(height: 20),
+                              // _buildImageWithText(context,"assets/images/art.png", "Art", ArtMenu()),
+                            ],
+                          ),
                           // SizedBox(height: 30),
                           // // Third row with two images and text
                           // Row(
