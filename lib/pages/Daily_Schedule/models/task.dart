@@ -41,10 +41,10 @@ class Expense {
   }
 }
 
-class ExpenseBucket {
-  ExpenseBucket({required this.category, required this.expenses});
+class TaskBucket {
+  TaskBucket({required this.category, required this.expenses});
 
-  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+  TaskBucket.forCategory(List<Expense> allExpenses, this.category)
       : expenses = allExpenses
             .where((expense) => expense.category == category)
             .toList(); // Alternative constructor
