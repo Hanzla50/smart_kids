@@ -5,6 +5,7 @@ import '../model/customUser.dart';
 
 class CurrentUserController extends GetxController {
   Rx<CustomUser> currentUser = const CustomUser(username: null, age: 0).obs;
+  
   RxString usernameTest = "Default".obs; 
   String? get username => currentUser.value?.username;
   String? get pfp => currentUser.value?.pfp;

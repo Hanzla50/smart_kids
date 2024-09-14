@@ -19,14 +19,7 @@ class Expenses extends StatefulWidget {
 class _ExpensesState extends State<Expenses> {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-  final List<Expense> _registeredExpenses = [
-    Expense(
-      time: TimeOfDay(hour: 9, minute: 30),
-      title: 'Quiz',
-      date: DateTime.now(),
-      category: Category.Lectures,
-    ),
-  ];
+  final List<Expense> _registeredExpenses = [];
 
   @override
   void initState() {
@@ -111,7 +104,7 @@ class _ExpensesState extends State<Expenses> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 3),
-        content: const Text('Expense deleted'),
+        content: const Text('Task deleted'),
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
@@ -133,9 +126,11 @@ class _ExpensesState extends State<Expenses> {
     );
 
     if (_registeredExpenses.isNotEmpty) {
-      mainContent = ExpensesList(
-        expenses: _registeredExpenses,
-        onRemoveExpense: _removeExpense,
+      mainContent = Expanded(
+        child: ExpensesList(
+          expenses: _registeredExpenses,
+          onRemoveExpense: _removeExpense,
+        ),
       );
     }
 
@@ -152,16 +147,26 @@ class _ExpensesState extends State<Expenses> {
       body: width < 600
           ? Column(
               children: [
-                Chart(expenses: _registeredExpenses),
-                Expanded(child: mainContent),
+                SizedBox(
+                  height: 200, // Adjust the height of the chart as needed
+                  child: Chart(expenses: _registeredExpenses),
+                ),
+                mainContent,
               ],
             )
           : Row(
               children: [
                 Expanded(
-                  child: Chart(expenses: _registeredExpenses),
+                  flex: 1,
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: Chart(expenses: _registeredExpenses),
+                  ),
                 ),
-                Expanded(child: mainContent),
+                Expanded(
+                  flex: 1,
+                  child: mainContent,
+                ),
               ],
             ),
     );

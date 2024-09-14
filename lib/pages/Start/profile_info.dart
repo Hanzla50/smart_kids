@@ -1,10 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:smart_kids_v1/controllers/currentUserController.dart';
 import 'package:smart_kids_v1/pages/Homepage/home_page.dart';
-import 'package:smart_kids_v1/routes.dart';
-
-import '../../model/customUser.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,11 +11,46 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  CurrentUserController controller = Get.put(CurrentUserController());
-  final _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   TextEditingController _childNameController = TextEditingController();
   TextEditingController _childAgeController = TextEditingController();
-  String? _gender; 
+  String? _gender;
+  final _formKey = GlobalKey<FormState>();
+
+  // Function to store child data in Firestore and navigate to Homepage
+  Future<void> _saveChildData() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        // Get the authenticated parent's user ID
+        User? parent = _auth.currentUser;
+
+        if (parent != null) {
+          // Save child's info under the parent's userId in Firestore
+          await _firestore.collection('profiles').doc(parent.uid).collection('children').add({
+            'childName': _childNameController.text,
+            'childAge': int.parse(_childAgeController.text),
+            'gender': _gender,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+
+          // Navigate to the homepage with child's name
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homepage(studentName: _childNameController.text),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not authenticated')));
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error storing profile: $e')));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +102,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      obscureText: true,
                       controller: _childAgeController,
+                      keyboardType: TextInputType.number,
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         filled: true,
@@ -87,7 +119,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a valid age';
                         }
-                        // Additional validation for age (e.g., numeric validation) can be added here
                         return null;
                       },
                     ),
@@ -137,28 +168,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    // TextFormField(
-                    //   obscureText: true,
-                    //   style: TextStyle(color: Colors.black),
-                    //   decoration: InputDecoration(
-                    //     filled: true,
-                    //     fillColor: Colors.white,
-                    //     hintText: "Enter Age",
-                    //     labelText: "Age",
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(30),
-                    //     ),
-                    //     prefixIcon: Icon(Icons.calendar_today),
-                    //   ),
-                    //   validator: (value) {
-                    //     if (value == null || value.isEmpty) {
-                    //       return 'Please enter a valid age';
-                    //     }
-                    //     // Additional validation for age (e.g., numeric validation) can be added here
-                    //     return null;
-                    //   },
-                    // ),
-                    const SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(200, 60),
@@ -170,19 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         "GO",
                         style: TextStyle(fontSize: 35, color: Colors.black),
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          controller.setCurrentUser(
-                            CustomUser(username: _childNameController.text, age: int.parse(_childAgeController.text))
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Homepage(studentName: _childNameController.text),
-                            ),
-                          );
-                        }
-                      },
+                      onPressed: _saveChildData,
                     ),
                   ],
                 ),
@@ -197,6 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void dispose() {
     _childNameController.dispose();
+    _childAgeController.dispose();
     super.dispose();
   }
 }

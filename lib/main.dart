@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
       ),
 
       routes: {
-       "/": (context) => Homepage(studentName: '',),
+       "/": (context) => StartPage(),
         "/login": (context) => LoginPage(),
         "/siguup": (context) => SignupPage(),
         "/profile": (context) => ProfilePage(),

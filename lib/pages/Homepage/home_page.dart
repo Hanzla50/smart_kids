@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_kids_v1/controllers/currentUserController.dart';
-import 'package:smart_kids_v1/pages/Art/Art%20Menu.dart';
+import 'package:smart_kids_v1/pages/Art/Art Menu.dart';
 import 'package:smart_kids_v1/pages/Daily_Schedule/widgets/tasks.dart';
 import 'package:smart_kids_v1/pages/Homepage/Art.dart';
 import 'package:smart_kids_v1/pages/Homepage/Dictionary.dart';
@@ -29,6 +31,42 @@ class _HomepageState extends State<Homepage> {
   CurrentUserController controller = Get.put(CurrentUserController());
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
+  String? _childName; // Variable to store fetched child's name
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchChildName(); // Fetch child's name on page load
+  }
+
+  Future<void> _fetchChildName() async {
+    try {
+      // Get the current authenticated parent
+      User? parent = _auth.currentUser;
+
+      if (parent != null) {
+        // Query Firestore to fetch the child's name
+        final snapshot = await _firestore
+            .collection('profiles')
+            .doc(parent.uid)
+            .collection('children')
+            .get();
+
+        if (snapshot.docs.isNotEmpty) {
+          // Assuming you fetch the first child's name (modify if needed)
+          final data = snapshot.docs.first.data();
+          setState(() {
+            _childName = data['childName']; // Fetch child's name from Firestore
+          });
+          print("Fetched child's name: $_childName"); // Log the fetched name
+        }
+      }
+    } catch (e) {
+      print("Error fetching child's name: $e");
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -70,29 +108,37 @@ class _HomepageState extends State<Homepage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Obx(
-              () => Text(
-                "${controller.currentUser.value?.username}",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black,
-                ),
-              ),
+              () {
+                // Observe the currentUser and show its data
+                final user = controller.currentUser.value;
+                return Text(
+                  _childName ?? "Loading...",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black,
+                  ),
+                );
+              },
             ),
           ),
         ],
         leading: Obx(
-          () => GestureDetector(
-            onTap: () {
-              _scaffoldKey.currentState!.openDrawer(); // Open drawer using GlobalKey
-            },
-            child: CircleAvatar(
-              backgroundImage: controller.currentUser.value?.pfp != null
-                  ? Image.network(controller.currentUser.value!.pfp!).image
-                  : const AssetImage("assets/images/Profile.png"),
-            ),
-          ),
+          () {
+            // Observe the currentUser and show its data
+            final user = controller.currentUser.value;
+            return GestureDetector(
+              onTap: () {
+                _scaffoldKey.currentState!.openDrawer(); // Open drawer using GlobalKey
+              },
+              child: CircleAvatar(
+                backgroundImage: user?.pfp != null
+                    ? Image.network(user!.pfp!).image
+                    : const AssetImage("assets/images/Profile.png"),
+              ),
+            );
+          },
         ),
       ),
       drawer: MyDrawer(),
@@ -194,9 +240,9 @@ class _HomepageState extends State<Homepage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildImageWithText("assets/images/Early.png", "Early Learning", Literacy_Menu()),
-                      SizedBox(height: 20),
-                      _buildImageWithText("assets/images/Dictionary.png", "Dictionary", Dictionary_Menu()),
+                      Expanded(child: _buildImageWithText("assets/images/Early.png", "Early Learning", Literacy_Menu())),
+                      SizedBox(width: 20),
+                      Expanded(child: _buildImageWithText("assets/images/Dictionary.png", "Dictionary", Dictionary_Menu())),
                     ],
                   ),
                   SizedBox(height: 30),
@@ -204,9 +250,9 @@ class _HomepageState extends State<Homepage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildImageWithText("assets/images/subject.png", "Subjects", Subjectspage()),
-                      SizedBox(height: 20),
-                      _buildImageWithText("assets/images/art.png", "Art", ArtMenu()),
+                      Expanded(child: _buildImageWithText("assets/images/subject.png", "Subjects", Subjectspage())),
+                      SizedBox(width: 20),
+                      Expanded(child: _buildImageWithText("assets/images/art.png", "Art", ArtMenu())),
                     ],
                   ),
                   SizedBox(height: 30),
@@ -214,21 +260,18 @@ class _HomepageState extends State<Homepage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildImageWithText("assets/images/game.png", "Games", Gamespage()),
-                      SizedBox(height: 20),
-                      _buildImageWithText("assets/images/quiz.png", "Quizzes", HomeTask()),
+                      Expanded(child: _buildImageWithText("assets/images/game.png", "Games", Gamespage())),
+                      SizedBox(width: 20),
+                      Expanded(child: _buildImageWithText("assets/images/quiz.png", "Quizzes", HomeTask())),
                     ],
                   ),
                   SizedBox(height: 30),
                   Row(
-                    
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildImageWithText("assets/images/to_do_list_logo.png", "Daily_Schedule", Expenses()),
-                      SizedBox(height: 20),
-                      _buildImageWithText("assets/images/white.png", "", Daily_Schedule()),
-
-                      
+                      Expanded(child: _buildImageWithText("assets/images/to_do_list_logo.png", "Daily_Schedule", Expenses())),
+                      SizedBox(width: 20),
+                      Expanded(child: _buildImageWithText("assets/images/white.png", "", Daily_Schedule())),
                     ],
                   ),
                 ],
@@ -274,38 +317,22 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  // Helper method to build image with text overlay
-  Widget _buildImageWithText(String imagePath, String labelText, Widget nextPage) {
-    return GestureDetector(
+  Widget _buildImageWithText(String imagePath, String text, Widget navigatePage) {
+    return InkWell(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => nextPage),
+          MaterialPageRoute(builder: (context) => navigatePage),
         );
       },
       child: Column(
         children: [
-          Stack(
-            children: [
-              Image.asset(imagePath, width: 120),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    color: Colors.black54,
-                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                    child: Text(
-                      labelText,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          Image.asset(imagePath, height: 100, width: 100),
+          SizedBox(height: 8),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],
       ),
