@@ -2,6 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:smart_kids_v1/pages/Homepage/ParentalControl/Profile_Screen.dart';
 import 'package:smart_kids_v1/pages/Homepage/home_page.dart';
 import 'package:smart_kids_v1/pages/Start/start_page.dart';
 
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
       ),
 
       routes: {
-       "/": (context) => StartPage(),
+       "/": (context) => ProfileScreen(),
         "/login": (context) => LoginPage(),
         "/siguup": (context) => SignupPage(),
         "/profile": (context) => ProfilePage(),

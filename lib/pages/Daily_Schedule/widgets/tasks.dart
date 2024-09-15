@@ -6,6 +6,8 @@ import 'package:smart_kids_v1/pages/Daily_Schedule/models/task.dart';
 import 'package:smart_kids_v1/pages/Daily_Schedule/widgets/chart/chart.dart';
 import 'package:smart_kids_v1/pages/Daily_Schedule/widgets/new_schedule_task.dart';
 import 'package:smart_kids_v1/pages/Daily_Schedule/widgets/schedule_lists/schedule_task_list.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -38,7 +40,28 @@ class _ExpensesState extends State<Expenses> {
         InitializationSettings(android: initializationSettingsAndroid);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    requestNotificationPermission();
+    checkAndRequestExactAlarmPermission();
   }
+
+  Future<void> requestNotificationPermission() async {
+    final status = await Permission.notification.request();
+    if (status.isDenied) {
+      // Handle the case where permission is denied
+      // You might want to provide some guidance to the user on how to enable notifications.
+    }
+  }
+
+  Future<void> checkAndRequestExactAlarmPermission() async {
+    if (await Permission.manageExternalStorage.request().isDenied) {
+      // Provide instructions to the user on how to enable this permission
+      // Optionally, open app settings
+      await openAppSettings();
+    }
+  }
+
+  
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
@@ -77,22 +100,28 @@ class _ExpensesState extends State<Expenses> {
       importance: Importance.max,
       priority: Priority.high,
       playSound: true,
+      // Ensure `fullScreenIntent` is not used unless you explicitly want it
     );
 
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      expense.hashCode, // Unique ID for the notification
-      'Task Reminder', // Notification Title
-      'Reminder for your task: ${expense.title}', // Notification Body
-      scheduledNotificationDateTime, // Scheduled time
-      platformChannelSpecifics, // Notification details (platform-specific)
-      androidAllowWhileIdle: true, // Allow notification to show even when idle
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.wallClockTime,
-      matchDateTimeComponents: DateTimeComponents.time, // Ensures it fires at the right time
-    );
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        expense.hashCode, // Unique ID for the notification
+        'Task Reminder', // Notification Title
+        'Reminder for your task: ${expense.title}', // Notification Body
+        scheduledNotificationDateTime, // Scheduled time
+        platformChannelSpecifics, // Notification details (platform-specific)
+        androidAllowWhileIdle: true, // Allow notification to show even when idle
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.wallClockTime,
+        matchDateTimeComponents: DateTimeComponents.time, // Ensures it fires at the right time
+      );
+    } catch (e) {
+      // Handle any errors that occur during scheduling
+      print('Error scheduling notification: $e');
+    }
   }
 
   void _removeExpense(Expense expense) {

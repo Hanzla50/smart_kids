@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:smart_kids_v1/controllers/currentUserController.dart';
+import 'package:smart_kids_v1/pages/Homepage/home_page.dart';
 import 'package:smart_kids_v1/pages/Start/forgot_password.dart';
 import 'package:smart_kids_v1/pages/Start/profile_info.dart';
 import 'package:smart_kids_v1/pages/Start/sign_up.dart';
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           // Navigate to home page upon successful login
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => ProfilePage()),
+            MaterialPageRoute(builder: (context) => Homepage(studentName: '',)),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

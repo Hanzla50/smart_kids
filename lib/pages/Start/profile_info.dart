@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_kids_v1/pages/Homepage/ParentalControl/ParentControl_page.dart';
 import 'package:smart_kids_v1/pages/Homepage/home_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -39,7 +40,8 @@ class _ProfilePageState extends State<ProfilePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Homepage(studentName: _childNameController.text),
+              // builder: (context) => Homepage(studentName: _childNameController.text),
+                 builder: (context) => ParentControlpage(),
             ),
           );
         } else {
