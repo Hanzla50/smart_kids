@@ -7,6 +7,7 @@ import 'package:smart_kids_v1/controllers/currentUserController.dart';
 import 'package:smart_kids_v1/model/customUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_kids_v1/pages/Homepage/ParentalControl/Profile_Screen.dart';
+// import 'package:smart_kids_v1/pages/Homepage/ParentalControl/Profile_Screen.dart';
 import 'package:smart_kids_v1/pages/Homepage/ParentalControl/timeLimit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_kids_v1/pages/Start/profile_info.dart';
