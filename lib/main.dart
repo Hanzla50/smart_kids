@@ -48,10 +48,9 @@ class MyApp extends StatelessWidget {
   late NotificationService notificationService;
     MyApp({super.key, required this.notificationService});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    DateTime specificDateTime = DateTime.now().add(Duration(seconds: 10)); // Adjust as needed
+    DateTime specificDateTime = DateTime.now().add(Duration(seconds: 10)); 
     notificationService.scheduleNotification(specificDateTime);
     return  MaterialApp(
       // themeMode: ThemeMode.light,
@@ -94,7 +93,7 @@ class MyApp extends StatelessWidget {
       routes: {
        "/": (context) => StartPage(),
         "/login": (context) => LoginPage(),
-        "/siguup": (context) => SignupPage(),
+        "/signup": (context) => SignupPage(),
         "/profile": (context) => ProfilePage(),
         "/go": (context) => Homepage(studentName: '',),
       },

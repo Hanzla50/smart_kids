@@ -10,9 +10,9 @@ import 'package:smart_kids_v1/pages/Homepage/Dictionary.dart';
 import 'package:smart_kids_v1/pages/Homepage/Games.dart';
 import 'package:smart_kids_v1/pages/Homepage/Quiz.dart';
 import 'package:smart_kids_v1/pages/Homepage/Subjects.dart';
+import 'package:smart_kids_v1/pages/QUIZZES/Quiz_Menu.dart';
 import 'package:smart_kids_v1/pages/dictionary/dictionary_menu.dart';
 import 'package:smart_kids_v1/pages/literacy/early_literacy_menu.dart';
-import 'package:smart_kids_v1/pages/quiz/quiz.dart';
 import 'Daily_Schedule.dart';
 import 'package:smart_kids_v1/widgets/drawer.dart';
 import 'notification_page.dart';
@@ -112,7 +112,7 @@ class _HomepageState extends State<Homepage> {
                 // Observe the currentUser and show its data
                 final user = controller.currentUser.value;
                 return Text(
-                  _childName ?? "Loading...",
+                  _childName!=null?"" : "Loading...",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -262,7 +262,7 @@ class _HomepageState extends State<Homepage> {
                     children: [
                       Expanded(child: _buildImageWithText("assets/images/game.png", "Games", Gamespage())),
                       SizedBox(width: 20),
-                      Expanded(child: _buildImageWithText("assets/images/quiz.png", "Quizzes", HomeTask())),
+                      Expanded(child: _buildImageWithText("assets/images/quiz.png", "Quizzes", QuizMenuScreen())),
                     ],
                   ),
                   SizedBox(height: 30),

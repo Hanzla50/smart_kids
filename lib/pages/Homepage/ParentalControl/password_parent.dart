@@ -114,7 +114,7 @@ class _PasswordPageState extends State<PasswordPage> {
                                     setState(() {
                                       message = "Success";
                                     });
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => ParentControlpage()),

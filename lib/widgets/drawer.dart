@@ -31,20 +31,20 @@ class _MyDrawerState extends State<MyDrawer> {
                     color: Colors.green,
                   ),
                   accountName: Text(
-                    "${controller.currentUser.value.username}",
+                    "",
                     style: TextStyle(
                       color: Colors.white, 
                     ),
                   ),
                   accountEmail: Text(
-                    "honey@gmail.com",
+                    "${controller.currentUser.value.username}",
                     style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                   currentAccountPicture: SizedBox(
-                    width: 80, // Adjust width to desired size
-                    height: 80, // Adjust height to desired size
+                    width: 40, // Adjust width to desired size
+                    height:40, // Adjust height to desired size
                     child: CircleAvatar(
                       backgroundImage: controller.currentUser.value.pfp != null ? 
                         Image.network(controller.currentUser.value.pfp!).image 

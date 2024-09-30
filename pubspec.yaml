@@ -118,6 +118,33 @@ flutter:
    - assets/background.png
    - assets/gtv5.jpg
 
+   - assets/matching.png
+   - assets/words.png
+   - assets/letter_recognition.png
+   - assets/numbers.png
+   - assets/letters.png
+   - assets/background.jpg
+   - assets/board.png
+
+
+  
+
+  # ----------------------------
+   - assets/Games_Menu/matching_activity_img.png
+   - assets/Games_Menu/general_knowledge_activity_img.png
+   - assets/Games_Menu/math_activity_img.png
+   - assets/Games_Menu/english_activity_img.png
+   # ------------------------------------------------------
+   # ENGLISH GAMES
+   - assets/English_Games/
+   #___________________
+   - assets/Eng_Games_Pics/
+   - assets/Math_Games/
+   - assets/General_know_Games/
+   - assets/Backgrounds/
+
+   
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
